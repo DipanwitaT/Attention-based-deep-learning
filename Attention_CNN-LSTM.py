@@ -41,6 +41,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Flatten
 from keras.layers import Dropout
+from keras.layers import BatchNormalization
 from keras.layers.convolutional import Conv1D
 from keras.layers.convolutional import MaxPooling1D
 from keras.utils import to_categorical
@@ -196,6 +197,7 @@ def create_CNNLSTM_with_attention(hidden_units, dense_units, input_shape, activa
     #dense=model.add(Dense(100)(concatenate_layer))
     attention_layer = attention()(concatenate_layer)
     #model.add(Dense(100)(attention_layer))
+    model.add(BatchNormalization())
     outputs=Dense(100, trainable=True, activation=activation)(attention_layer)
     model.add(Dense(n_outputs, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])   
@@ -232,7 +234,7 @@ shap_values = e.shap_values(reshaped_segments[test])
 shap.plots.waterfall(shap_values[0])# visualize the first prediction's explanation with a force plot
 shap.plots.force(shap_values[0])
 
-import matplotlib.pyplot as plt
+
 
 #plt.savefig('/home/path/path/shap_summary.png', dpi=600)
 #plt.savefig('C:/Users/Dipanwita/OneDrive/Desktop/shap_summery.eps', dpi=300, bbox_inches='tight')
